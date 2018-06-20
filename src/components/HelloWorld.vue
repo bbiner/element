@@ -85,6 +85,9 @@
       <li>
         <router-link to="/example/scss">Scss 支持</router-link>
       </li>
+      <li>
+        <router-link to="/example/element-ui">Element UI</router-link>
+      </li>
     </ul>
   </div>
 </template>
