@@ -1,0 +1,60 @@
+// 通用样式变量定义
+
+
+// 屏幕宽度断点
+$screen-sm: 768px;
+$screen-md: 992px;  // 1024
+$screen-lg: 1200px; // 1366 / 1440
+$screen-xl: 1920px;
+
+// 色系
+$color-primary: #0747a6;        // 主色调
+$color-primary-active: #2684FF; // 主色激活
+$color-primary-tint: #c7e7f7;   // 主浅色
+$color-secondary: #5e6c84;      // 次色调
+$color-white: #ffffff;          // 白色
+$color-white-tint: #dddddd;     // 白浅色
+$color-light: #f5f7fa;          // 亮色
+$color-tint: #eef1f6;           // 浅色
+$color-black: #333333;          // 黑色
+$color-gray: #808080;           // 灰色
+
+// 大小
+$size-normal: 14px;   // 通用
+$size-bold: 16px;     // 粗
+$size-bolder: 18px;   // 更粗
+$size-lighter: 20px;  // 高亮粗
+
+// 层次
+$z-index-container: 100; // 主容器
+$z-index-slide: 200;     // 侧滑组件
+
+// 字体
+%font-size-normal {
+  color: $color-black;
+  @media screen and (min-width: $screen-xl) {
+    font-size: $size-bold;
+    line-height: $size-bold;
+  }
+  @media screen and (min-width: $screen-lg) {
+    font-size: $size-normal;
+    line-height: $size-normal;
+  }
+}
+%font-size-bold {
+  color: $color-black;
+  @media screen and (min-width: $screen-xl) {
+    font-size: $size-bolder;
+    line-height: $size-bolder;
+  }
+  @media screen and (min-width: $screen-lg) {
+    font-size: $size-bold;
+    line-height: $size-bold;
+  }
+}
+
+// 无缝
+%no-crack {
+  margin: 0;
+  padding: 0;
+}

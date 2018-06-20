@@ -80,6 +80,12 @@
         </a>
       </li>
     </ul>
+    <h2>Example</h2>
+    <ul>
+      <li>
+        <router-link to="/example/scss">Scss 支持</router-link>
+      </li>
+    </ul>
   </div>
 </template>
 

@@ -6,6 +6,11 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+// Custom Css
+import './assets/styles/element-reset.scss'
+import './assets/styles/animation.scss'
+import './assets/styles/transition.scss'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

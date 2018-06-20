@@ -1,0 +1,23 @@
+// 重置 element-ui 样式
+
+@import "env";
+
+.el-table {
+  &--small {
+    // 缩减单元格的边距
+    td, th {
+      padding: 2px 0;
+    }
+    thead {
+      td, th {
+        padding: 5px 0;
+      }
+    }
+  }
+
+  // 单元格数据默认居中
+  & td, & th {
+    text-align: center;
+  }
+}
+
