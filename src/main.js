@@ -14,6 +14,11 @@ Vue.use(ElementUI)
 import VueCookie from 'vue-cookie'
 Vue.use(VueCookie)
 
+// Awesome Icon
+import Icon from 'vue-awesome/components/Icon'
+import 'vue-awesome/icons'
+Vue.component('icon', Icon)
+
 Vue.config.productionTip = false
 
 // Custom Css
