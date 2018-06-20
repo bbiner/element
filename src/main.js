@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 
 // Element UI
 import ElementUI from 'element-ui'
@@ -23,6 +24,7 @@ import './assets/styles/transition.scss'
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
