@@ -9,6 +9,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
+// Cookie
+import VueCookie from 'vue-cookie'
+Vue.use(VueCookie)
+
 Vue.config.productionTip = false
 
 // Custom Css
