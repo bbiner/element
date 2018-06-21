@@ -2,6 +2,15 @@
 
 @import "env";
 
+*{
+  margin: 0;
+  padding: 0;
+}
+
+html,body,section {
+  height: 100%;
+}
+
 .el-table {
   &--small {
     // 缩减单元格的边距
