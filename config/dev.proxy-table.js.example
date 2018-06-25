@@ -1,0 +1,19 @@
+'use strict'
+module.exports = {
+  '/boss-api': {
+    // target: 'http://local.test.gdgyun.com/',
+    target: 'http://www.gdgyun.com.local/',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/boss-api': '/boss-api'
+    }
+  },
+  '/api': {
+    // target: 'http://local.test.gdgyun.com/',
+    target: 'http://www.gdgyun.com.local/',
+    changeOrigin: true,
+    pathRewrite: {
+      '^/api': '/api'
+    }
+  }
+}
