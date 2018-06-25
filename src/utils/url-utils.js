@@ -1,5 +1,5 @@
 export default {
-  parse(url) {
+  parse (url) {
     let a = document.createElement('a')
     a.href = url
 
