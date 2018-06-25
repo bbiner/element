@@ -32,7 +32,7 @@ export default new Router({
       iconCls: 'el-icon-news',
       children: [
         {
-          path: '/',
+          path: '/article',
           component: Empty,
           name: '文章管理',
           iconCls: 'el-icon-news',
@@ -46,7 +46,7 @@ export default new Router({
           ]
         },
         {
-          path: '/',
+          path: '/article',
           component: Empty,
           name: '首页管理',
           iconCls: 'el-icon-mobile-phone',

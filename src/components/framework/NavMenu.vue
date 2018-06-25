@@ -8,13 +8,13 @@
       router
     >
       <template v-for="(A,a) in $router.options.routes">
-        <el-submenu v-if="A.children && A.children.length>0 && !A.leaf" :index="'1_'+a" :key="a">
+        <el-submenu v-if="A.children && A.children.length>0 && !A.leaf" :index="'a_1_'+a" :key="a">
           <template slot="title">
             <i :class="A.iconCls"></i>
             <span>{{A.name}}</span>
           </template>
             <template v-for="(B,b) in A.children">
-              <el-submenu v-if="B.children && B.children.length>0 && !B.leaf" :index="B.path" :key="b">
+              <el-submenu v-if="B.children && B.children.length>0 && !B.leaf" :index="'b_1_'+b" :key="b">
                 <template slot="title">
                   <i :class="B.iconCls"></i>
                   <span>{{B.name}}</span>
