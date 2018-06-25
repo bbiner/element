@@ -5,6 +5,7 @@ const Home = () => import('@/components/Home')
 const Empty = () => import('@/components/Empty')
 const ExampleElementUI = () => import('@/components/example/ElementUI')
 const ExampleScss = () => import('@/components/example/Scss')
+const ArticleCategory = () => import('@/components/community/article/ArticleCategory')
 
 Vue.use(Router)
 
@@ -53,7 +54,7 @@ export default new Router({
           children: [
             {
               path: '/page1',
-              component: ExampleElementUI,
+              component: ArticleCategory,
               name: '栏目分类',
               iconCls: 'el-icon-tickets',
               children: [

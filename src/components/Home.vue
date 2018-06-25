@@ -45,11 +45,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
   .el-header, .el-footer {
     height: 60px;
     line-height: 60px;
@@ -76,10 +71,8 @@ export default {
     width: 200px !important;
   }
 
-  .el-main {
-    color: #333;
-    text-align: center;
-    line-height: 160px;
+  .el-breadcrumb {
+    margin-bottom: 20px;
   }
 
   body > .el-container {
