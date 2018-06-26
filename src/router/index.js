@@ -7,6 +7,9 @@ const ExampleElementUI = () => import('@/components/example/ElementUI')
 const ExampleScss = () => import('@/components/example/Scss')
 const ArticleCategoryList = () => import('@/components/community/article/category/ArticleCategoryList')
 const BannerList = () => import('@/components/common/Banner/BannerList')
+const GoodSave = () => import('@/components/community/scoreshop/GoodSave')
+const GoodManage = () => import('@/components/community/scoreshop/GoodManage')
+const OrderManage = () => import('@/components/community/scoreshop/OrderManage')
 
 Vue.use(Router)
 
@@ -63,6 +66,32 @@ export default new Router({
             {path: '/page3', component: ExampleScss, name: '首页内容', iconCls: 'el-icon-tickets'},
             {path: '/banner', component: BannerList, name: 'Banner管理', iconCls: 'el-icon-picture'}
           ]
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: Home,
+      name: '积分商城',
+      iconCls: 'el-icon-news',
+      children: [
+        {
+          path: '/good_manage',
+          component: GoodManage,
+          name: '商品管理',
+          iconCls: 'el-icon-news'
+        },
+        {
+          path: '/good_add',
+          component: GoodSave,
+          name: '添加商品',
+          iconCls: 'el-icon-mobile-phone'
+        },
+        {
+          path: '/order_manage',
+          component: OrderManage,
+          name: '订单管理',
+          iconCls: 'el-icon-mobile-phone'
         }
       ]
     }
