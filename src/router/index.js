@@ -5,6 +5,8 @@ const Home = () => import('@/components/Home')
 const Empty = () => import('@/components/Empty')
 const ExampleElementUI = () => import('@/components/example/ElementUI')
 const ExampleScss = () => import('@/components/example/Scss')
+const CommunityMember = () => import('@/components/community/Member')
+const Management = () => import('@/components/community/score/Management')
 const ArticleCategoryList = () => import('@/components/community/article/category/ArticleCategoryList')
 const BannerList = () => import('@/components/common/Banner/BannerList')
 const GoodSave = () => import('@/components/community/scoreshop/GoodSave')
@@ -92,6 +94,34 @@ export default new Router({
           component: OrderManage,
           name: '订单管理',
           iconCls: 'el-icon-mobile-phone'
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: Home,
+      name: '云社区',
+      iconCls: 'el-icon-menu',
+      children: [
+        {
+          path: '/members',
+          component: CommunityMember,
+          name: '社员列表',
+          iconCls: 'el-icon-tickets'
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: Home,
+      name: '积分商城',
+      iconCls: 'el-icon-mobile-phone',
+      children: [
+        {
+          path: '/score',
+          component: Management,
+          name: '积分管理',
+          iconCls: 'el-icon-setting'
         }
       ]
     }
