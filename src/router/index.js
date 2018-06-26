@@ -59,18 +59,10 @@ export default new Router({
           iconCls: 'el-icon-mobile-phone',
           children: [
             {
-              path: '/page1',
+              path: '/category',
               component: ArticleCategoryList,
               name: '栏目分类',
-              iconCls: 'el-icon-tickets',
-              children: [
-                {
-                  path: '/page1112',
-                  component: ExampleElementUI,
-                  name: '分类列表',
-                  iconCls: 'el-icon-tickets'
-                }
-              ]
+              iconCls: 'el-icon-tickets'
             },
             {path: '/page3', component: ExampleScss, name: '首页内容', iconCls: 'el-icon-tickets'},
             {path: '/page2', component: ExampleScss, name: 'Banner管理', iconCls: 'el-icon-picture'}
