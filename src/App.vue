@@ -1,15 +1,23 @@
 <template>
   <div id="app">
-    <transition name="fade"
-                mode="out-in">
+    <login v-if="!isLogin"></login>
+    <transition v-else name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
   </div>
 </template>
 
 <script>
+import Login from '@/components/common/Login'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {Login},
+  computed: {
+    isLogin () {
+      return this.$store.getters.isLogin
+    }
+  }
 }
 </script>
 
