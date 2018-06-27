@@ -20,3 +20,5 @@ selenium-debug.log
 package-lock.json
 config/dev.proxy-table.js
 src/.env.js
+.rsyncd.passwd
+*-rsyncd.passwd

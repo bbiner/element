@@ -1,0 +1,53 @@
+stages:
+  - install
+  - deploy
+
+variables:
+  NPM_REGISTRY: "https://registry.npm.taobao.org"
+  CHROMEDRIVER_CDN_URL: "https://npm.taobao.org/mirrors/chromedriver"
+
+cache:
+  key: ${CI_JOB_NAME}/${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+install:
+  stage: install
+  only:
+    - release
+    - master
+  script:
+    - ${NPM_PATH} config set registry ${NPM_REGISTRY}
+    - ${NPM_PATH} config set chromedriver_cdnurl ${CHROMEDRIVER_CDN_URL}
+    - echo 'install dependencies ...'
+    - ${NPM_PATH} install
+
+to_test_server:
+  stage: deploy
+  only:
+    - release
+  script:
+    - cp config/dev.proxy-table.js.example config/dev.proxy-table.js
+    - echo "${TEST_ENV}" > src/.env.js
+    - echo 'build for production with minification ...'
+    - ${NPM_PATH} run build
+    - echo ${TEST_RSYNC_PASSWORD} > .test-rsyncd.passwd
+    - chmod 600 .test-rsyncd.passwd
+    - echo 'deploy to testServer ...'
+    - ls dist -a
+    - rsync -a --delete-after --password-file=.test-rsyncd.passwd dist/ ${TEST_RSYNC_URL}
+
+to_production_server:
+  stage: deploy
+  only:
+    - master
+  script:
+    - cp config/dev.proxy-table.js.example config/dev.proxy-table.js
+    - echo "${PRODUCTION_ENV}" > src/.env.js
+    - echo 'build for production with minification ...'
+    - ${NPM_PATH} run build
+    - echo ${PRODUCTION_RSYNC_PASSWORD} > .production-rsyncd.passwd
+    - chmod 600 .production-rsyncd.passwd
+    - echo 'deploy to testServer ...'
+    - ls dist -a
+    - rsync -a --delete-after --password-file=.production-rsyncd.passwd dist/ ${PRODUCTION_RSYNC_URL}
