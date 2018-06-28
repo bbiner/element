@@ -21,7 +21,7 @@
                   <i :class="B.iconCls"></i>
                   <span>{{B.name}}</span>
                 </template>
-                <el-menu-item v-if="!C.hidden":index="C.path" :key="c" v-for="(C,c) in B.children">
+                <el-menu-item v-if="!C.hidden" :index="C.path" :key="c" v-for="(C,c) in B.children">
                   <template slot="title">
                     <i :class="C.iconCls"></i>
                     <span>{{C.name}}</span>
