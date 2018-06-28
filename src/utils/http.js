@@ -1,6 +1,13 @@
 import http from 'axios'
 import store from '@/store'
 import { LOGOUT } from '@/store/action-names'
+import { APP_ENV, BASE_API_URL } from '@/.env'
+
+// 非本地环境的设置项
+if (APP_ENV !== 'local') {
+  // 设置 base_url
+  http.defaults.baseURL = BASE_API_URL
+}
 
 // 默认超时时间
 http.defaults.timeout = 5000

@@ -19,3 +19,4 @@ selenium-debug.log
 ### Custom
 package-lock.json
 config/dev.proxy-table.js
+src/.env.js
