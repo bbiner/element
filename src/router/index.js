@@ -6,7 +6,7 @@ const Empty = () => import('@/components/Empty')
 const ExampleElementUI = () => import('@/components/example/ElementUI')
 const ExampleScss = () => import('@/components/example/Scss')
 const ArticleCategoryList = () => import('@/components/community/article/category/ArticleCategoryList')
-const Editor = () => import('@/components/example/Editor')
+const BannerList = () => import('@/components/common/Banner/BannerList')
 
 Vue.use(Router)
 
@@ -29,21 +29,6 @@ export default new Router({
           path: '/dashboard',
           component: ExampleElementUI,
           name: '仪表盘',
-          iconCls: 'el-icon-tickets'
-        }
-      ]
-    },
-    {
-      path: '/',
-      component: Home,
-      name: '',
-      iconCls: 'el-icon-news',
-      leaf: true,
-      children: [
-        {
-          path: '/editor',
-          component: Editor,
-          name: '富文本',
           iconCls: 'el-icon-tickets'
         }
       ]
@@ -74,14 +59,9 @@ export default new Router({
           name: '首页管理',
           iconCls: 'el-icon-mobile-phone',
           children: [
-            {
-              path: '/category',
-              component: ArticleCategoryList,
-              name: '栏目分类',
-              iconCls: 'el-icon-tickets'
-            },
+            {path: '/category', component: ArticleCategoryList, name: '栏目分类', iconCls: 'el-icon-tickets'},
             {path: '/page3', component: ExampleScss, name: '首页内容', iconCls: 'el-icon-tickets'},
-            {path: '/page2', component: ExampleScss, name: 'Banner管理', iconCls: 'el-icon-picture'}
+            {path: '/banner', component: BannerList, name: 'Banner管理', iconCls: 'el-icon-picture'}
           ]
         }
       ]
