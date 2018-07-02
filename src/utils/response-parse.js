@@ -1,18 +1,22 @@
 // 内部私有常量
-const _DEFAULT_PAGE_SIZE = 10
-const _DEFAULT_PAGE_SIZES = [30, 80, 150, 300]
+const _DEFAULT_PAGE_SIZES = [10, 30, 100, 300]
+const _DEFAULT_PAGE_SIZE = _DEFAULT_PAGE_SIZES[0]
 
 /**
  * 分页信息
  */
 class Pagination {
   constructor ({page = 1, totalRow = 0, totalPage = 1, pageSize = _DEFAULT_PAGE_SIZE}) {
-    this.currentPage = page
+    this.page = page
     this.totalRow = totalRow
     this.totalPage = totalPage
     this.pageSize = pageSize
     this.pageSizes = _DEFAULT_PAGE_SIZES
     this.urls = null
+  }
+
+  setPage (page) {
+    this.page = page > 0 ? page : 1
   }
 
   setPageSize (pageSize) {
@@ -55,7 +59,7 @@ class PaginationUrl {
  * @param paginationInfo
  * @returns {PaginationParam}
  */
-const parseParam = ({paginationInfo}) => {
+const parsePaginationParam = ({paginationInfo}) => {
   // 分割信息
   let params = paginationInfo.split(', ').filter(function (value) {
     return value !== '' && value.indexOf('="') && value.endsWith('"')
@@ -71,8 +75,8 @@ const parseParam = ({paginationInfo}) => {
   })
 
   let paginationParam = new PaginationParam()
-  paginationParam.setTotalRow(ret.rows)
-  paginationParam.setTotalPage(ret.count)
+  paginationParam.setTotalRow(parseInt(ret.rows))
+  paginationParam.setTotalPage(parseInt(ret.count))
 
   return paginationParam
 }
@@ -99,12 +103,22 @@ const parseLink = ({link}) => {
   return new PaginationUrl(url)
 }
 
+const parseCurrentPage = (url) => {
+  let page = 1
+  let values = url.match(/^http:.*\?.*[&]?page=(\d+).*$/)
+  if (values !== null && values.length === 2) {
+    page = parseInt(values[1])
+  }
+
+  return page
+}
+
 const parsePageSize = (url) => {
-  // http://xxxxx.com/customer/system/rest-example/persons/1/labels?page=1&pagesize=10
+  // http://test-emcp.qudao51.com/customer/system/rest-example/persons/1/labels?page=1&pageSize=10
   let pageSize = 10
-  let values = url.match(/^http:.*\?.*&pagesize=(\d+).*$/)
-  if (values === 2) {
-    pageSize = values[1]
+  let values = url.match(/^http:.*\?.*&pageSize=(\d+).*$/)
+  if (values !== null && values.length === 2) {
+    pageSize = parseInt(values[1])
   }
 
   return pageSize
@@ -117,16 +131,19 @@ const parsePageSize = (url) => {
  */
 const pagination = (headers) => {
   // 解析分页参数
-  const params = parseParam({paginationInfo: headers['x-pagination-info']})
+  const params = parsePaginationParam({paginationInfo: headers['x-pagination-info']})
   // 解析页码
   const urls = parseLink({link: headers['link']})
   // 解析 pageSize
   const pageSize = parsePageSize(urls.first)
+  // 解析 page
+  const currentPage = parseCurrentPage(urls.self)
 
   let pagination = new Pagination({
     totalRow: params.totalRow, totalPage: params.totalPage
   })
   pagination.setUrls(urls)
+  pagination.setPage(currentPage)
   pagination.setPageSize(pageSize)
 
   return pagination
