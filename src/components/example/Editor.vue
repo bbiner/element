@@ -18,6 +18,14 @@ export default {
         contentText: 'Editor example'
       }
     }
+  },
+  created () {
+    this.form.contentText = 'second text.'
+
+    setTimeout(() => {
+      console.log('in timeout.')
+      this.form.contentText = '<p>new content</p>'
+    }, 3000)
   }
 }
 </script>

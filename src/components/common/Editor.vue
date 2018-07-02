@@ -57,6 +57,12 @@ export default {
       currentValue: this.value
     }
   },
+  watch: {
+    value: function (val, oldVal) {
+      this.currentValue = val
+      this.editor.html(val)
+    }
+  },
   mounted () {
     const upload = Object.assign({}, imageUpload, this.upload)
     if (this.uploadCategory !== undefined && this.uploadCategory.length > 0) {
