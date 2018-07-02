@@ -12,7 +12,7 @@ http.defaults.withCredentials = true
 // http 请求拦截器
 http.interceptors.request.use(
   config => {
-    console.log('authorization', store.getters.authorization)
+    // console.log('authorization', store.getters.authorization)
     // 判断是否存在 token，如果存在的话，则每个 http header 都加上 token
     if (store.getters.authorization) {
       config.headers.Authorization = store.getters.authorization
