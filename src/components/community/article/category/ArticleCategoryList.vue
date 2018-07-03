@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { articleApi } from '@/api/platform/article'
+import { articleCategoryApi } from '@/api/platform/article'
 import AddArticleCategory from '@/components/community/article/category/AddArticleCategory'
 
 export default {
@@ -80,27 +80,27 @@ export default {
   },
   methods: {
     getList () {
-      articleApi.get({title: '6666'}, (response) => {
+      articleCategoryApi.get({title: '6666'}, (response) => {
         this.tableData = response.data
         this.loading = false
       })
     },
     putOnline (row) {
-      articleApi.putOnline({id: row.id}, (response) => {
+      articleCategoryApi.putOnline({id: row.id}, (response) => {
         if (response.status === 204) {
           row.status = 1
         }
       })
     },
     putOffline (row) {
-      articleApi.putOffline({id: row.id}, (response) => {
+      articleCategoryApi.putOffline({id: row.id}, (response) => {
         if (response.status === 204) {
           row.status = -1
         }
       })
     },
     up (row, index) {
-      articleApi.up({id: row.id}, (response) => {
+      articleCategoryApi.up({id: row.id}, (response) => {
         if (response.status === 204) {
           this.changePosition(index, 'up')
         } else {
@@ -109,7 +109,7 @@ export default {
       })
     },
     down (row, index) {
-      articleApi.down({id: row.id}, (response) => {
+      articleCategoryApi.down({id: row.id}, (response) => {
         if (response.status === 204) {
           this.changePosition(index, 'down')
         } else {
@@ -147,7 +147,7 @@ export default {
       this.hide()
     },
     deleteRow (row, index) {
-      articleApi.delete({id: row.id}, (response) => {
+      articleCategoryApi.delete({id: row.id}, (response) => {
         if (response.status === 204) {
           this.tableData.splice(index, 1)
         } else {

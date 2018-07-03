@@ -7,6 +7,7 @@ const ExampleElementUI = () => import('@/components/example/ElementUI')
 const ExampleScss = () => import('@/components/example/Scss')
 const CommunityMember = () => import('@/components/community/Member')
 const Management = () => import('@/components/community/score/Management')
+const ArticleList = () => import('@/components/community/article/article/ArticleList')
 const ArticleCategoryList = () => import('@/components/community/article/category/ArticleCategoryList')
 const BannerList = () => import('@/components/common/Banner/BannerList')
 const GoodSave = () => import('@/components/community/scoreshop/GoodSave')
@@ -51,8 +52,8 @@ export default new Router({
           iconCls: 'el-icon-news',
           children: [
             {
-              path: '/page111',
-              component: ExampleElementUI,
+              path: '/articles',
+              component: ArticleList,
               name: '文章列表',
               iconCls: 'el-icon-tickets'
             }

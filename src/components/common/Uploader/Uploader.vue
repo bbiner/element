@@ -1,7 +1,7 @@
 <template>
 <el-upload
   class="file-uploader"
-  action="/boss-api/file/image"
+  action="/boss-api/file/simple-image"
   :headers="uploadHeaders"
   :show-file-list="false"
   :on-success="handleSuccess"
