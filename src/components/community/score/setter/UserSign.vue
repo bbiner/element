@@ -138,7 +138,10 @@ export default {
         }, 200)
         // 过滤回现参数
       }).catch(error => {
-        console.log(error)
+        this.$message({
+          type: 'error',
+          message: error.data.error
+        })
       })
     },
     // 过滤回现数据
@@ -296,7 +299,10 @@ export default {
           this.$emit('refresh')
         }, 100)
       }).catch(error => {
-        console.log(error)
+        this.$message({
+          type: 'error',
+          message: error.data.error
+        })
       })
     },
     handleChange (value) {
