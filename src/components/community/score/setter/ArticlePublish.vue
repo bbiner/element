@@ -9,7 +9,7 @@
             <el-col :span="3">
               <el-input-number v-model="scores[index]" :step="10" @change="handleChange" :min="1" :max="99999999" label="描述文字"></el-input-number>
             </el-col>
-            <el-button-group style="margin-left: -45%">
+            <el-button-group style="margin-left: 20%">
               <el-button @click="add(stars.length + 1)" size="small" round type="primary" icon="el-icon-plus"></el-button>
               <el-button @click="remove(stars.length)" size="small" round type="info" icon="el-icon-minus"></el-button>
             </el-button-group>
