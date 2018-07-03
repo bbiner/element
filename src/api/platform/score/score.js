@@ -40,8 +40,8 @@ class Score {
         }
         reject(response)
       })
-        .catch(error => {
-          reject(error)
+        .catch(trace => {
+          reject(trace.response)
         })
     })
   }
