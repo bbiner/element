@@ -82,7 +82,7 @@ export default {
       this.$on('ArticleLikeStrategy', () => {
         console.log('监听')
         setTimeout(() => {
-          this.articleRead()
+          this.articleLike()
         }, 200)
       })
     })
@@ -97,7 +97,10 @@ export default {
         }, 200)
         // 过滤回现参数
       }).catch(error => {
-        console.log(error)
+        this.$message({
+          type: 'error',
+          message: error.data.error
+        })
       })
     },
     // 过滤回现数据
@@ -169,7 +172,7 @@ export default {
       }
       return true
     },
-    articleRead () {
+    articleLike () {
       this.taskDetail()
       this.dialogTableVisible = true
     },
@@ -207,7 +210,10 @@ export default {
           this.$emit('refresh')
         }, 100)
       }).catch(error => {
-        console.log(error)
+        this.$message({
+          type: 'error',
+          message: error.data.error
+        })
       })
     },
     test () {

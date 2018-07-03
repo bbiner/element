@@ -174,7 +174,10 @@ export default {
         this.pageInfo = Page.pagination(res.headers)
         this.loading = false
       }).catch(error => {
-        console.log(error)
+        this.$message({
+          type: 'error',
+          message: error.data.error
+        })
         this.loading = false
       })
     },
