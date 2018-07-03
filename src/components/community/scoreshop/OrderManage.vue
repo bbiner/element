@@ -84,6 +84,10 @@
         prop="express_code"
         label="物流单号"
         width="180">
+        <template slot-scope="scope">
+          <el-button type="text"  @click="trace(scope.row.id)">{{scope.row.express_code}}</el-button>
+          <trace ref="trace"></trace>
+        </template>
       </el-table-column>
       <el-table-column
         prop="express_status_name"
@@ -97,12 +101,24 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="block" v-if="pageInfo.length !== 0">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageInfo.currentPage"
+        :page-size="pageInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="Math.round(this.pageInfo.totalRow)">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import child from '@/components/community/scoreshop/Fahuo'
+import trace from '@/components/community/scoreshop/Trace'
 import OrderListApi from '@/api/platform/order-list'
+import Page from '@/utils/response-parse'
 export default {
   data () {
     return {
@@ -113,52 +129,29 @@ export default {
         start_time: '',
         end_time: ''
       },
-      tableData: []
+      tableData: [],
+      pageInfo: [],
+      params: []
     }
   },
   created () {
-    OrderListApi.list(this.form, response => {
-      const status = response.status || 0
-      const body = response.data || {}
-      if (status === 200) {
-        if (body) {
-          body.map(item => {
-            let arr = [item.consignee_name, item.consignee_phone, item.province, item.city, item.area, item.street]
-            item.address = arr.join('')
-            // 奖品类型
-            if (item.good_type === 1) {
-              item.good_type_name = '金币'
-            } else {
-              item.good_type_name = '实物奖品'
-            }
-            // 邮寄方式
-            if (item.shipping === 1) {
-              item.shipping_name = '包邮'
-            } else if (item.shipping === 2) {
-              item.shipping_name = '到付'
-            } else {
-              item.shipping_name = '自动发送'
-            }
-            // 订单状态
-            if (item.express_status === 0) {
-              item.express_status_name = '待发货'
-            } else if (item.express_status === 1) {
-              item.express_status_name = '待收货'
-            } else {
-              item.express_status_name = '交易完成'
-            }
-            return item
-          })
-        }
-        this.tableData = body
-      } else {
-        this.$message.error(body.error || '获取列表失败')
-      }
-    })
+    this.getList()
   },
   methods: {
     onSubmit () {
-      OrderListApi.list(this.form, response => {
+      this.getList()
+    },
+    fahuo (order) {
+      this.$refs.child.$emit('showBox', order)
+    },
+    trace (ordetId) {
+      this.$refs.trace.$emit('showBox', ordetId)
+    },
+    reload () {
+      location.reload()
+    },
+    getList () {
+      OrderListApi.list(Object.assign({}, this.params, this.form), response => {
         const status = response.status || 0
         const body = response.data || {}
         if (status === 200) {
@@ -192,20 +185,23 @@ export default {
             })
           }
           this.tableData = body
+          this.pageInfo = Page.pagination(response.headers)
         } else {
           this.$message.error(body.error || '获取列表失败')
         }
       })
     },
-    fahuo (order) {
-      this.$refs.child.$emit('showBox', order)
+    handleCurrentChange (val) {
+      this.params.page = val
+      this.getList()
     },
-    reload () {
-      location.reload()
+    handleSizeChange (val) {
+      this.params.pageSize = val
     }
   },
   components: {
-    child: child
+    child: child,
+    trace: trace
   }
 }
 </script>

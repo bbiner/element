@@ -85,7 +85,7 @@ export default {
               this.$message.success('发货成功')
               location.reload()
             } else {
-              this.$message.error('发货失败')
+              this.$message.error(response.data.error)
             }
           })
         }

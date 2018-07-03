@@ -23,5 +23,14 @@ export default {
       }
     }).then(response => cb(response))
       .catch(trace => cb(trace.response))
+  },
+  // 获取订单物流轨迹
+  trace (orderId, cb) {
+    http.get(ORDER_LIST_URL + '/' + orderId + '/expresses', {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(response => cb(response))
+      .catch(trace => cb(trace.response))
   }
 }

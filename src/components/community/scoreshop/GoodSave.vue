@@ -6,55 +6,28 @@
         <el-input size="mini" v-model="form.title"></el-input>
       </el-col>
     </el-form-item>
-
     <el-form-item label="详情说明" prop="intro">
       <el-col :span="15">
-        <el-input type="textarea" v-model="form.intro"></el-input>
+        <editor v-model="form.intro" :toolBar="toolbar" upload-category="score-shop"></editor>
       </el-col>
     </el-form-item>
 
-    <el-form-item label="商品图片">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="商品详情图" name="first">
-          注：详情图为必填选项
-          <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-        </el-tab-pane>
-        <el-tab-pane label="缩略图" name="second">
-          注：缩略图为必填选项
-          <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-        </el-tab-pane>
-        <el-tab-pane label="图标" name="third">
-          注：图标为必填选项
-          <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
-        </el-tab-pane>
-      </el-tabs>
+    <el-form-item label="详情图" prop="detail_pic">
+      <upload @uploadSuccess="uploadDetailPic" v-if="id" :defaultImage="form.detail_pic"></upload>
+      <upload @uploadSuccess="uploadDetailPic" v-else></upload>
+      <el-input type="hidden" v-model="form.detail_pic"></el-input>
+    </el-form-item>
+
+    <el-form-item label="缩略图" prop="thumb_pic">
+      <upload @uploadSuccess="uploadThumbPic" v-if="id" :defaultImage="form.thumb_pic"></upload>
+      <upload @uploadSuccess="uploadThumbPic" v-else></upload>
+      <el-input type="hidden" v-model="form.thumb_pic"></el-input>
+    </el-form-item>
+
+    <el-form-item label="图标" prop="icon_pic">
+      <upload @uploadSuccess="uploadIconPic" v-if="id" :defaultImage="form.icon_pic"></upload>
+      <upload @uploadSuccess="uploadIconPic" v-else ></upload>
+      <el-input type="hidden" v-model="form.icon_pic"></el-input>
     </el-form-item>
 
     <el-form-item label="上架方式">
@@ -146,15 +119,18 @@
 </template>
 <script>
 import GoodSaveApi from '@/api/platform/good-save'
+import Upload from '@/components/common/Uploader/Uploader'
+import Editor from '@/components/common/Editor'
+
 export default {
   data () {
     return {
       form: {
         title: '',
         intro: '',
-        detail_pic: 'detail_11.jpg',
-        thumb_pic: 'detail_22.jpg',
-        icon_pic: 'detail_33.jpg',
+        detail_pic: '',
+        thumb_pic: '',
+        icon_pic: '',
         grounding_type: 2,
         grounding_at: '',
         shipping: 1,
@@ -168,6 +144,7 @@ export default {
         partner_name: '',
         type: 2
       },
+      toolbar: 'all',
       id: '',
       rules: {
         title: [
@@ -211,24 +188,14 @@ export default {
         const detail = response.data || {}
         if (status === 200) {
           this.id = detail.id
+          console.log(detail)
           this.form = detail
+          this.form.intro = detail.intro
         }
       })
     }
   },
   methods: {
-    // 上传图片
-    handleRemove (file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview (file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
-    // tab标签
-    handleClick (tab, event) {
-      console.log(tab, event)
-    },
     add (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -263,7 +230,20 @@ export default {
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
+    },
+    uploadDetailPic (imgUrl) {
+      this.form.detail_pic = imgUrl
+    },
+    uploadThumbPic (imgUrl) {
+      this.form.thumb_pic = imgUrl
+    },
+    uploadIconPic (imgUrl) {
+      this.form.icon_pic = imgUrl
     }
+  },
+  components: {
+    upload: Upload,
+    editor: Editor
   }
 }
 </script>
