@@ -24,6 +24,9 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  externals: {
+    KindEditor: 'window.KindEditor'
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

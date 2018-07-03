@@ -8,6 +8,7 @@ const ExampleScss = () => import('@/components/example/Scss')
 const CommunityMember = () => import('@/components/community/Member')
 const Management = () => import('@/components/community/score/Management')
 const ArticleCategoryList = () => import('@/components/community/article/category/ArticleCategoryList')
+const Editor = () => import('@/components/example/Editor')
 
 Vue.use(Router)
 
@@ -30,6 +31,21 @@ export default new Router({
           path: '/dashboard',
           component: ExampleElementUI,
           name: '仪表盘',
+          iconCls: 'el-icon-tickets'
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: Home,
+      name: '',
+      iconCls: 'el-icon-news',
+      leaf: true,
+      children: [
+        {
+          path: '/editor',
+          component: Editor,
+          name: '富文本',
           iconCls: 'el-icon-tickets'
         }
       ]

@@ -20,6 +20,11 @@ const getters = {
 
     return null
   },
+  getAccessToken: state => {
+    if (state.token && state.token.hasOwnProperty('access_token')) {
+      return state.token['access_token'] || null
+    }
+  },
   getUser: state => state.userProfile
 }
 
