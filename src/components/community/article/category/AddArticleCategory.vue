@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { articleApi } from '@/api/platform/article'
+import { articleCategoryApi } from '@/api/platform/article'
 
 export default {
   data () {
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      articleApi.addCategory(this.form, (response) => {
+      articleCategoryApi.addCategory(this.form, (response) => {
         if (response.status === 200) {
           this.done(response.data)
         } else if (response.status === 400) {
