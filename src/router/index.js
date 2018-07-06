@@ -13,6 +13,7 @@ const BannerList = () => import('@/components/common/Banner/BannerList')
 const GoodSave = () => import('@/components/community/scoreshop/GoodSave')
 const GoodManage = () => import('@/components/community/scoreshop/GoodManage')
 const OrderManage = () => import('@/components/community/scoreshop/OrderManage')
+const CommunityPayCode = () => import('@/components/community/pay-code/PayCode')
 
 Vue.use(Router)
 
@@ -108,6 +109,12 @@ export default new Router({
           path: '/members',
           component: CommunityMember,
           name: '社员列表',
+          iconCls: 'el-icon-tickets'
+        },
+        {
+          path: '/community/pay-code',
+          component: CommunityPayCode,
+          name: '付款码',
           iconCls: 'el-icon-tickets'
         }
       ]
