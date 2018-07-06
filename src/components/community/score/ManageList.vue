@@ -160,7 +160,9 @@ export default {
   watch: {
     list () {
       if (this.list) {
-        this.getScores()
+        setTimeout(() => {
+          this.getScores()
+        }, 200)
       }
     }
   },
@@ -186,8 +188,8 @@ export default {
           item.status = item.status === 1
           return item
         })
-        this.pageInfo = Page.pagination(res.headers)
         this.loading = false
+        this.pageInfo = Page.pagination(res.headers)
       }).catch(error => {
         console.log(error)
       })

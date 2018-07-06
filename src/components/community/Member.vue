@@ -65,7 +65,7 @@ export default {
         this.pageInfo = Page.pagination(res.headers)
         this.loading = false
       }).catch(error => {
-        alert(error)
+        console.log(error)
         this.loading = false
       })
     },
