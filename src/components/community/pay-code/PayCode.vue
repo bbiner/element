@@ -64,10 +64,10 @@
 </template>
 
 <script>
-  import PayCodeApi from '@/api/platform/community-pay-code'
-  import ResponseParse from '@/utils/response-parse'
+import PayCodeApi from '@/api/platform/community-pay-code'
+import ResponseParse from '@/utils/response-parse'
 
-  export default {
+export default {
   name: 'PayCode',
   data () {
     return {
