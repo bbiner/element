@@ -90,9 +90,15 @@ export default {
       PayCodeApi.list({page: this.pagination.page, pagesize: this.pagination.pagesize}, response => {
         const status = response.status || 0
         const body = response.data || {}
-        if (status >= 200 && status < 300) {
-          this.table = body
-          this.pagination = ResponseParse.pagination(response.headers)
+        if (status >= 200 && status < 300
+          && body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
+          this.table = body['data']['data']
+          this.pagination = {
+            page: body['data']['current_page'],
+            pageSize: body['data']['per_page'],
+            totalRow: body['data']['total'],
+            pageSizes: [10, 30, 100, 300]
+          }
         } else {
           this.$message.error(body.error || '列表获取失败')
         }
@@ -119,8 +125,9 @@ export default {
       PayCodeApi.make({level: this.form.level}, response => {
         const status = response.status || 0
         const body = response.data || {}
-        if (status >= 200 && status < 300) {
-          this.table.unshift(body)
+        if (status >= 200 && status < 300
+          && body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
+          this.table.unshift(body['data'])
           this.dialogVisible = false
         } else {
           this.$message.error(body.error || '生成失败')

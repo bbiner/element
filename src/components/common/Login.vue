@@ -90,8 +90,8 @@ export default {
           AuthApi.token(this.form, response => {
             const status = response.status || 0
             const body = response.data || {}
-            if (status === 200) {
-              this.$store.dispatch(LOGIN, {token: body})
+            if (status === 200 && body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
+              this.$store.dispatch(LOGIN, {token: body['data']})
               this.$message.success('登陆成功')
             } else {
               this.$message.error(body.error || '登陆失败')
