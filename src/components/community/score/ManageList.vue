@@ -182,15 +182,25 @@ export default {
     getScores (params = {}) {
       this.loading = true
       _score.get(SCORE_URL, Object.assign({}, params, this.form)).then(res => {
-        console.log(res)
-        this.tableData = res.data.data.map(item => {
-          item.status = item.status === 1
-          return item
-        })
-        this.loading = false
-        this.pageInfo = _score.pagination(res.data)
+        if (res.code === 1000) {
+          this.tableData = res.data.data.map(item => {
+            item.status = item.status === 1
+            return item
+          })
+          this.loading = false
+          this.pageInfo = _score.pagination(res.data)
+        } else {
+          this.loading = false
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
       }).catch(error => {
-        console.log(error)
+        this.$message({
+          type: 'error',
+          message: error.msg
+        })
       })
     },
     modifyScoreStatus () {

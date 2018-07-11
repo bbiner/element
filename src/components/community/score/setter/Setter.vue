@@ -188,19 +188,25 @@ export default {
     tasks () {
       _score.get(TASK_URL).then(res => {
         console.log('res', res)
-        this.tableData = res.data.map(item => {
-          item.status = !!item.status
-          item.frequency = item.frequency === 0 ? '不限' : item.frequency
-          item.cycle = item.end_at === null ? '长期' : item.end_at
-          if (item.awards.hasOwnProperty('award_scores')) {
-            item.awards.award_score = item.awards.award_scores.join()
-          }
-          if (item.awards.hasOwnProperty('genre')) {
-            item.awards.award_score = item.awards.genre === 'consecutive' ? JSON.parse(item.awards.consecutive_awards).award_scores.join() : JSON.parse(item.awards.simple_awards).award_score
-          }
-          return item
-        })
-        console.log(this.tableData)
+        if (res.code === 1000) {
+          this.tableData = res.data.map(item => {
+            item.status = !!item.status
+            item.frequency = item.frequency === 0 ? '不限' : item.frequency
+            item.cycle = item.end_at === null ? '长期' : item.end_at
+            if (item.awards.hasOwnProperty('award_scores')) {
+              item.awards.award_score = item.awards.award_scores.join()
+            }
+            if (item.awards.hasOwnProperty('genre')) {
+              item.awards.award_score = item.awards.genre === 'consecutive' ? JSON.parse(item.awards.consecutive_awards).award_scores.join() : JSON.parse(item.awards.simple_awards).award_score
+            }
+            return item
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
       })
     },
     // 切换状态
