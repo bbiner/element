@@ -79,13 +79,13 @@ export default {
             express_code: this.form.expressCode
           }
           OrderListApi.deliver(orderId, express, response => {
-            const status = response.status || 0
-            if (status === 200) {
+            const status = response.data.code
+            if (status === 1000) {
               this.isShow = false
               this.$message.success('发货成功')
               location.reload()
             } else {
-              this.$message.error(response.data.error)
+              this.$message.error(response.data.msg)
             }
           })
         }

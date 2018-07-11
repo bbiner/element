@@ -38,6 +38,9 @@
         prop="thumb_pic"
         label="商品缩略图"
         width="180">
+        <template slot-scope="scope">
+        <img :src="scope.row.thumb_pic" width="100px">
+        </template>
       </el-table-column>
       <el-table-column
         prop="title"
@@ -69,11 +72,21 @@
           <el-button type="text" @click="edit(scope.row.id)">编辑</el-button>
           <el-button type="text" v-if="scope.row.status===1" @click="grounding(scope.row.id,-1)">下架</el-button>
           <el-button type="text" v-if="scope.row.status===(-1||0)" @click="grounding(scope.row.id,1)">上架</el-button>
-          <el-button type="text">手机预览</el-button>
           <el-button type="text" @click="del(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <div class="block" v-if="Math.round(pageInfo.totalRow) !== 0">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="Math.round(pageInfo.currentPage)"
+        :page-sizes="[20, 30, 40, 50]"
+        :page-size="Math.round(pageInfo.pageSize)"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="Math.round(pageInfo.totalRow)">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -88,51 +101,31 @@ export default {
         title: '',
         stock_status: ''
       },
-      tableData: []
+      tableData: [],
+      pageInfo: [],
+      params: {}
     }
   },
   created () {
-    GoodListApi.list(this.form, response => {
-      const status = response.status || 0
-      const body = response.data || {}
-      if (status === 200) {
-        if (body) {
-          body.map(item => {
-            if (item.status === 1) {
-              item.status_name = '上架中'
-            } else if (item.status === -1) {
-              item.status_name = '下架中'
-            } else {
-              item.status_name = '待定'
-            }
-            if (item.stock <= item.warning_stock) {
-              item.stock_status = '缺货'
-            } else {
-              item.stock_status = '有货'
-            }
-            return item
-          })
-        }
-        this.tableData = body
-      } else {
-        this.$message.error(body.error || '获取列表失败')
-      }
-    })
+    this.getList()
   },
   methods: {
     onSubmit () {
-      GoodListApi.list(this.form, response => {
-        const status = response.status || 0
-        const body = response.data || {}
-        if (status === 200) {
+      this.getList()
+    },
+    getList () {
+      GoodListApi.list(Object.assign({}, this.params, this.form), response => {
+        const status = response.data.code
+        const body = response.data.data.data || {}
+        if (status === 1000) {
           if (body) {
             body.map(item => {
               if (item.status === 1) {
-                item.status = '上架中'
+                item.status_name = '上架中'
               } else if (item.status === -1) {
-                item.status = '下架中'
+                item.status_name = '下架中'
               } else {
-                item.status = '待定'
+                item.status_name = '待定'
               }
               if (item.stock <= item.warning_stock) {
                 item.stock_status = '缺货'
@@ -143,8 +136,11 @@ export default {
             })
           }
           this.tableData = body
+          this.pageInfo.currentPage = response.data.data.current_page
+          this.pageInfo.pageSize = response.data.data.per_page
+          this.pageInfo.totalRow = response.data.data.total
         } else {
-          this.$message.error(body.error || '获取列表失败')
+          this.$message.error(response.data.msg)
         }
       })
     },
@@ -155,12 +151,12 @@ export default {
     // 上下架商品
     grounding (id, state) {
       GoodListApi.grounding(id, state, response => {
-        const status = response.status || 0
-        if (status === 200) {
-          this.$message.success(response.data.message)
+        const status = response.data.code
+        if (status === 1000) {
+          this.$message.success(response.data.msg)
           location.reload()
         } else {
-          this.$message.error(response.data.message)
+          this.$message.error(response.data.msg)
         }
       })
     },
@@ -172,12 +168,12 @@ export default {
         type: 'warning'
       }).then(() => {
         GoodListApi.del(id, response => {
-          const status = response.status || 0
-          if (status === 204) {
+          const status = response.data.code
+          if (status === 1000) {
             this.$message.success('删除成功')
             location.reload()
           } else {
-            this.$message.error(response.data.error)
+            this.$message.error(response.data.msg)
           }
         })
       }).catch(() => {
@@ -186,6 +182,14 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    handleCurrentChange (val) {
+      this.params.page = val
+      this.getList()
+    },
+    handleSizeChange (val) {
+      this.params.pageSize = val
+      this.getList()
     }
   }
 }

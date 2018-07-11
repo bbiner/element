@@ -30,9 +30,9 @@ export default {
     },
     getTrace (orderId) {
       OrderListApi.trace(orderId, response => {
-        const status = response.status || 0
-        const body = response.data.traces || {}
-        if (status === 200) {
+        const status = response.data.code
+        const body = response.data.data.traces
+        if (status === 1000) {
           this.tableData = JSON.parse(body)
         } else {
           this.tableData = []
