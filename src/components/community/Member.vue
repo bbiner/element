@@ -1,11 +1,7 @@
 <template>
   <div>
     <div class="search-box">
-      <el-input placeholder="请输入内容" v-model="params.keywords" class="input-with-select">
-        <el-select v-model="select" slot="prepend" placeholder="手机号码">
-          <el-option label="云社区编码" value="code"></el-option>
-          <el-option label="手机号码" value="mobile"></el-option>
-        </el-select>
+      <el-input placeholder="手机号码/云社区编码" v-model="params.keywords" class="input-with-select">
         <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
       </el-input>
     </div>
@@ -37,7 +33,6 @@
 <script type="text/ecmascript-6">
 import Pagination from '@/components/community/common/Pagination'
 import Community from '@/api/platform/community/members'
-import Page from '@/utils/response-parse'
 const _community = new Community()
 export default {
   components: {
@@ -61,11 +56,22 @@ export default {
     search (params = {}) {
       this.loading = true
       _community.members(Object.assign({}, params, this.params)).then(res => {
-        this.tableData = res.data
-        this.pageInfo = Page.pagination(res.headers)
+        console.log('type', res)
+        if (res.code === 1000) {
+          this.tableData = res.data.data
+          this.pageInfo = _community.pagination(res.data)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
         this.loading = false
       }).catch(error => {
-        alert(error)
+        this.$message({
+          type: 'error',
+          message: error.msg
+        })
         this.loading = false
       })
     },

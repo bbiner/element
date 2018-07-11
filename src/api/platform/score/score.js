@@ -36,12 +36,13 @@ class Score {
     return new Promise((resolve, reject) => {
       http.then(response => {
         if (response.status === 200 || response.status === 204) {
-          resolve(response)
+          console.log('response', response.data)
+          resolve(response.data)
         }
         reject(response)
       })
-        .catch(trace => {
-          reject(trace.response)
+        .catch(error => {
+          reject(error)
         })
     })
   }
@@ -70,19 +71,13 @@ class Score {
     })
   }
 
-  /**
-   * 切换任务状态
-   *
-   * @param taskId
-   * @param status
-   * @returns {*}
-   */
-  modifyStatus (taskId, status) {
-    return this.request(Http.put(TASK_MODIFY_STATUS_URL + taskId, {status: status}), {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+  pagination (data) {
+    if (typeof data !== 'object') return {}
+    return {
+      currentPage: data.current_page,
+      pageSize: data.per_page,
+      totalRow: data.total
+    }
   }
 }
 

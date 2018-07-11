@@ -200,19 +200,25 @@ export default {
       }
       console.log('提交数据', this.form)
       _score.put(TASK_ARTICLE_SHARE_URL, this.form).then(res => {
-        console.log(res)
         this.dialogTableVisible = false
-        this.$message({
-          type: 'success',
-          message: '设置成功'
-        })
-        setTimeout(() => {
-          this.$emit('refresh')
-        }, 100)
+        if (res.code === 1000) {
+          this.$message({
+            type: 'success',
+            message: '设置成功'
+          })
+          setTimeout(() => {
+            this.$emit('refresh')
+          }, 100)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
       }).catch(error => {
         this.$message({
           type: 'error',
-          message: error.data.error
+          message: error.msg
         })
       })
     },

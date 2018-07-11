@@ -88,9 +88,10 @@ export default {
         // 过滤回现参数
         this.filterBack()
       }).catch(error => {
+        console.log('error', error)
         this.$message({
           type: 'error',
-          message: error.data.error
+          message: error
         })
       })
     },
@@ -172,7 +173,7 @@ export default {
       }).catch(error => {
         this.$message({
           type: 'error',
-          message: error.data.error
+          message: error.msg
         })
       })
     },

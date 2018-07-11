@@ -48,7 +48,6 @@
 
 <script type="text/ecmascript-6">
 import Score, {SCORE_USER_URL, SCORE_USER_LOGS_URL} from '@/api/platform/score/score'
-import Page from '@/utils/response-parse'
 import Pagination from '@/components/community/common/Pagination'
 const _score = new Score()
 export default {
@@ -85,7 +84,9 @@ export default {
     },
     scoreDetail (uid) {
       _score.get(SCORE_USER_URL + uid).then(res => {
-        this.score = res.data
+        if (res.code === 1000) {
+          this.score = res.data
+        }
       }).catch(error => {
         console.log(error)
       })
@@ -94,8 +95,15 @@ export default {
       _score.get(SCORE_USER_LOGS_URL + uid, Object.assign({}, params)).then(res => {
         console.log('积分明细', res)
         this.loading = false
-        this.scoreLos = res.data
-        this.pageInfo = Page.pagination(res.headers)
+        if (res.code === 1000) {
+          this.scoreLos = res.data.data
+          this.pageInfo = _score.pagination(res.data)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
       }).catch(error => {
         this.loading = false
         console.log(error)
