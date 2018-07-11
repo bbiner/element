@@ -35,7 +35,11 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
   response => {
-    // console.log('http.interceptors: ', response)
+    console.log('http.interceptors: ', response)
+    if (response.data['data']['code'] === 1008) {
+      // 未认证
+      store.dispatch(LOGOUT)
+    }
     return response
   },
   error => {

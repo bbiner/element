@@ -94,9 +94,9 @@ export default {
           body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
           this.table = body['data']['data']
           this.pagination = {
-            page: body['data']['current_page'],
-            pageSize: body['data']['per_page'],
-            totalRow: body['data']['total'],
+            page: parseInt(body['data']['current_page']),
+            pageSize: parseInt(body['data']['per_page']),
+            totalRow: parseInt(body['data']['total']),
             pageSizes: [10, 30, 100, 300]
           }
         } else {
