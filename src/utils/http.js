@@ -41,7 +41,7 @@ http.interceptors.response.use(
   error => {
     // console.log('http.interceptors: ', error, error.response)
     const response = error.response || {}
-    if (response.status === 401) {
+    if (response.data['data']['code'] === 1008) {
       // 未认证
       store.dispatch(LOGOUT)
     }

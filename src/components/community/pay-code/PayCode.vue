@@ -65,7 +65,7 @@
 
 <script>
 import PayCodeApi from '@/api/platform/community-pay-code'
-import ResponseParse from '@/utils/response-parse'
+// import ResponseParse from '@/utils/response-parse'
 
 export default {
   name: 'PayCode',
@@ -90,8 +90,8 @@ export default {
       PayCodeApi.list({page: this.pagination.page, pagesize: this.pagination.pagesize}, response => {
         const status = response.status || 0
         const body = response.data || {}
-        if (status >= 200 && status < 300
-          && body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
+        if (status >= 200 && status < 300 &&
+          body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
           this.table = body['data']['data']
           this.pagination = {
             page: body['data']['current_page'],
@@ -125,8 +125,8 @@ export default {
       PayCodeApi.make({level: this.form.level}, response => {
         const status = response.status || 0
         const body = response.data || {}
-        if (status >= 200 && status < 300
-          && body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
+        if (status >= 200 && status < 300 &&
+          body.hasOwnProperty('code') && body['code'] === 1000 && body.hasOwnProperty('data')) {
           this.table.unshift(body['data'])
           this.dialogVisible = false
         } else {
