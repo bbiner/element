@@ -101,14 +101,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="block" v-if="pageInfo.length !== 0">
+    <div class="block" v-if="Math.round(pageInfo.totalRow) !== 0">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="pageInfo.currentPage"
-        :page-size="pageInfo.pageSize"
+        :current-page="Math.round(pageInfo.currentPage)"
+        :page-sizes="[20, 30, 40, 50]"
+        :page-size="Math.round(pageInfo.pageSize)"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="Math.round(this.pageInfo.totalRow)">
+        :total="Math.round(pageInfo.totalRow)">
       </el-pagination>
     </div>
   </div>
@@ -118,7 +119,6 @@
 import child from '@/components/community/scoreshop/Fahuo'
 import trace from '@/components/community/scoreshop/Trace'
 import OrderListApi from '@/api/platform/order-list'
-import Page from '@/utils/response-parse'
 export default {
   data () {
     return {
@@ -131,7 +131,7 @@ export default {
       },
       tableData: [],
       pageInfo: [],
-      params: []
+      params: {}
     }
   },
   created () {
@@ -152,9 +152,9 @@ export default {
     },
     getList () {
       OrderListApi.list(Object.assign({}, this.params, this.form), response => {
-        const status = response.status || 0
-        const body = response.data || {}
-        if (status === 200) {
+        const status = response.data.code
+        const body = response.data.data.data
+        if (status === 1000) {
           if (body) {
             body.map(item => {
               let arr = [item.consignee_name, item.consignee_phone, item.province, item.city, item.area, item.street]
@@ -185,9 +185,11 @@ export default {
             })
           }
           this.tableData = body
-          this.pageInfo = Page.pagination(response.headers)
+          this.pageInfo.currentPage = response.data.data.current_page
+          this.pageInfo.pageSize = response.data.data.per_page
+          this.pageInfo.totalRow = response.data.data.total
         } else {
-          this.$message.error(body.error || '获取列表失败')
+          this.$message.error(response.data.msg)
         }
       })
     },
@@ -197,6 +199,7 @@ export default {
     },
     handleSizeChange (val) {
       this.params.pageSize = val
+      this.getList()
     }
   },
   components: {

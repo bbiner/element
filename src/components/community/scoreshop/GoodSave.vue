@@ -8,13 +8,27 @@
     </el-form-item>
     <el-form-item label="详情说明" prop="intro">
       <el-col :span="15">
-        <editor v-model="form.intro" :toolBar="toolbar" upload-category="score-shop"></editor>
+        <editor v-model="form.intro" :toolBar="toolbar" upload-category="score-shop" ref="ke"></editor>
       </el-col>
     </el-form-item>
 
-    <el-form-item label="详情图" prop="detail_pic">
-      <upload @uploadSuccess="uploadDetailPic" v-if="id" :defaultImage="form.detail_pic"></upload>
-      <upload @uploadSuccess="uploadDetailPic" v-else></upload>
+    <el-form-item label="详情图" prop="detail_pic" >
+      <el-col :span="8">
+      <el-upload
+        class="upload-demo"
+        action="/boss-api/file/simple-image"
+        :headers="uploadHeaders"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :onError="uploadError"
+        :on-success="uploadSuccess "
+        :file-list="files"
+        :limit="3"
+        :on-exceed="handleExceed"
+        list-type="picture">
+        <el-button size="small" type="primary">点击上传</el-button>
+      </el-upload>
+      </el-col>
       <el-input type="hidden" v-model="form.detail_pic"></el-input>
     </el-form-item>
 
@@ -120,7 +134,7 @@
 <script>
 import GoodSaveApi from '@/api/platform/good-save'
 import Upload from '@/components/common/Uploader/Uploader'
-import Editor from '@/components/common/Editor'
+import Editor from '@/components/community/scoreshop/Editor'
 
 export default {
   data () {
@@ -144,6 +158,7 @@ export default {
         partner_name: '',
         type: 2
       },
+      files: [],
       toolbar: 'all',
       id: '',
       rules: {
@@ -177,52 +192,79 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       // // tab标签
-      activeName: 'first'
+      activeName: 'first',
+      curText: ''
+    }
+  },
+  computed: {
+    uploadHeaders () {
+      return {
+        Authorization: this.$store.getters.authorization
+      }
     }
   },
   created () {
     let goodId = this.$route.query.id
     if (goodId) {
       GoodSaveApi.getDetail(goodId, response => {
-        const status = response.status || 0
-        const detail = response.data || {}
-        if (status === 200) {
+        const status = response.data.code
+        const detail = response.data.data
+        if (status === 1000) {
           this.id = detail.id
-          console.log(detail)
           this.form = detail
-          this.form.intro = detail.intro
+          this.$refs.ke.setContent(detail.intro)
+          this.files = JSON.parse(detail.detail_pic)
         }
       })
     }
   },
   methods: {
     add (formName) {
+      if (this.files.length > 0) {
+        let index
+        let arr = []
+        for (index in this.files) {
+          arr.push({url: this.files[index].url})
+        }
+        this.form.detail_pic = JSON.stringify(arr)
+      } else {
+        this.form.detail_pic = ''
+      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           GoodSaveApi.add(this.form, response => {
-            const status = response.status || 0
-            const body = response.data || {}
-            if (status === 200) {
+            const status = response.data.code
+            if (status === 1000) {
               this.$message.success('保存成功')
               this.$router.push('/good_manage')
             } else {
-              this.$message.error(body.error || '保存失败')
+              this.$message.error(response.data.msg)
             }
           })
         }
       })
     },
     edit (formName, id) {
+      if (this.files.length > 0) {
+        let index
+        let arr = []
+        for (index in this.files) {
+          arr.push({url: this.files[index].url})
+        }
+        this.form.detail_pic = JSON.stringify(arr)
+      } else {
+        this.form.detail_pic = ''
+      }
+      this.form.intro = this.$refs.ke.getContent()
       this.$refs[formName].validate(valid => {
         if (valid) {
           GoodSaveApi.edit(this.form, id, response => {
-            const status = response.status || 0
-            const body = response.data || {}
-            if (status === 200) {
+            const status = response.data.code
+            if (status === 1000) {
               this.$message.success('修改成功')
               this.$router.push('/good_manage')
             } else {
-              this.$message.error(body.error || '修改失败')
+              this.$message.error(response.data.msg)
             }
           })
         }
@@ -231,14 +273,26 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
-    uploadDetailPic (imgUrl) {
-      this.form.detail_pic = imgUrl
-    },
     uploadThumbPic (imgUrl) {
       this.form.thumb_pic = imgUrl
     },
     uploadIconPic (imgUrl) {
       this.form.icon_pic = imgUrl
+    },
+    handleRemove (file, fileList) {
+      this.files = fileList
+    },
+    handlePreview (file) {
+      console.log(file)
+    },
+    handleExceed () {
+      this.$message.error('详情图最多上传3张')
+    },
+    uploadError (response, file, fileList) {
+      this.$message.error('上传失败，请重试！')
+    },
+    uploadSuccess (response, file, fileList) {
+      this.files.push({url: response.path})
     }
   },
   components: {
