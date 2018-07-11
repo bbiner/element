@@ -84,11 +84,22 @@ export default {
           console.log('put参数', this.params)
           _score.put(SCORE_MODIFY_URL + this.row.id, this.params).then(res => {
             console.log('修改成功:', res)
-            // 组件数据初始化
-            this.dialogScore = false
-            this.score.int = 0
-            this.score.minus = 0
-            this.score.operation_reason = ''
+            if (res.code === 1000) {
+              // 组件数据初始化
+              this.dialogScore = false
+              this.score.int = 0
+              this.score.minus = 0
+              this.score.operation_reason = ''
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
             setTimeout(() => {
               this.$emit('refresh')
             }, 200)

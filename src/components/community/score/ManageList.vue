@@ -97,7 +97,6 @@
 <script type="text/ecmascript-6">
 import Score, {SCORE_URL, SCORE_STATUS_URL} from '@/api/platform/score/score'
 import Pagination from '@/components/community/common/Pagination'
-import Page from '@/utils/response-parse'
 import Message from '@/components/community/common/MessageBox'
 import UserScore from '@/components/community/score/UserScore'
 import ModifyUserScore from '@/components/community/score/ModifyScore'
@@ -160,7 +159,9 @@ export default {
   watch: {
     list () {
       if (this.list) {
-        this.getScores()
+        setTimeout(() => {
+          this.getScores()
+        }, 200)
       }
     }
   },
@@ -182,12 +183,12 @@ export default {
       this.loading = true
       _score.get(SCORE_URL, Object.assign({}, params, this.form)).then(res => {
         console.log(res)
-        this.tableData = res.data.map(item => {
+        this.tableData = res.data.data.map(item => {
           item.status = item.status === 1
           return item
         })
-        this.pageInfo = Page.pagination(res.headers)
         this.loading = false
+        this.pageInfo = _score.pagination(res.data)
       }).catch(error => {
         console.log(error)
       })

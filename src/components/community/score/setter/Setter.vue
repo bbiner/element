@@ -108,7 +108,6 @@
 import ElRow from 'element-ui/packages/row/src/row'
 import Score, {TASK_URL, TASK_LOG_URL, TASK_MODIFY_STATUS_URL} from '@/api/platform/score/score'
 import Pagination from '@/components/community/common/Pagination'
-import Page from '@/utils/response-parse'
 import FirstLogin from '@/components/community/score/setter/firstLogin'
 import ArticleRead from '@/components/community/score/setter/articleRead'
 import ArticleLike from '@/components/community/score/setter/ArticleLike'
@@ -161,22 +160,22 @@ export default {
       this.taskScoreLog = true
       this.taskId = row.id
       _score.get(TASK_LOG_URL, {task_id: row.id}).then(res => {
-        this.taskLogs = res.data
+        this.taskLogs = res.data.data
         // 分页信息
-        this.pageInfo = Page.pagination(res.headers)
+        this.pageInfo = _score.pagination(res.data)
         this.loading = false
       })
     },
     searchTaskLog (info = {}) {
       this.loading = true
       _score.get(TASK_LOG_URL, Object.assign({}, info, {task_id: this.taskId}, this.params)).then(res => {
-        this.taskLogs = res.data
-        this.pageInfo = Page.pagination(res.headers)
+        this.taskLogs = res.data.data
+        this.pageInfo = _score.pagination(res.data)
         this.loading = false
       }).catch(error => {
         this.$message({
           type: 'error',
-          message: error.data.error
+          message: error.msg
         })
         this.loading = false
       })
@@ -188,6 +187,7 @@ export default {
     // 任务列表
     tasks () {
       _score.get(TASK_URL).then(res => {
+        console.log('res', res)
         this.tableData = res.data.map(item => {
           item.status = !!item.status
           item.frequency = item.frequency === 0 ? '不限' : item.frequency
@@ -207,7 +207,17 @@ export default {
     modifyStatus (taskId, bool) {
       let status = bool ? 1 : 0
       _score.put(TASK_MODIFY_STATUS_URL + taskId, {status: status}).then(res => {
-        console.log(res)
+        if (res.code === 1000) {
+          this.$message({
+            type: 'success',
+            message: '切换成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '失败了'
+          })
+        }
       }).catch(error => {
         console.log(error)
       })

@@ -65,7 +65,6 @@
 <script type="text/ecmascript-6">
 import Score, {TASK_LOG_URL} from '@/api/platform/score/score'
 import Pagination from '@/components/community/common/Pagination'
-import Page from '@/utils/response-parse'
 const _score = new Score()
 export default {
   components: {
@@ -130,8 +129,15 @@ export default {
       this.getParams()
       _score.get(TASK_LOG_URL, Object.assign({}, params, this.form)).then(res => {
         console.log('积分明细', res)
-        this.tableData = res.data
-        this.pageInfo = Page.pagination(res.headers)
+        if (res.code === 1000) {
+          this.tableData = res.data.data
+          this.pageInfo = _score.pagination(res.data)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
       })
     },
     // 接收子组件分页数据

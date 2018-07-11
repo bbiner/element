@@ -132,15 +132,22 @@ export default {
     taskDetail () {
       _score.get(TASK_DETAIL_URL + TASK_ID, this.from).then(res => {
         console.log('任务详情', res)
-        setTimeout(() => {
-          this.task = res.data
-          this.filterBack()
-        }, 200)
+        if (res.code === 1000) {
+          setTimeout(() => {
+            this.task = res.data
+            this.filterBack()
+          }, 200)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
         // 过滤回现参数
       }).catch(error => {
         this.$message({
           type: 'error',
-          message: error.data.error
+          message: error.msg
         })
       })
     },
@@ -301,7 +308,7 @@ export default {
       }).catch(error => {
         this.$message({
           type: 'error',
-          message: error.data.error
+          message: error.msg
         })
       })
     },

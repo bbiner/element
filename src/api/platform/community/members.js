@@ -5,14 +5,23 @@ class Community {
     return new Promise((resolve, reject) => {
       Http.get(MEMBERS_URL, {params: params})
         .then(response => {
-          if (response.status === 200) {
-            resolve(response)
+          if (response.status === 200 || response.status === 204) {
+            resolve(response.data)
           }
         })
         .catch(error => {
           reject(error.statusText)
         })
     })
+  }
+
+  pagination (data) {
+    if (typeof data !== 'object') return {}
+    return {
+      currentPage: data.current_page,
+      pageSize: data.per_page,
+      totalRow: data.total
+    }
   }
 }
 

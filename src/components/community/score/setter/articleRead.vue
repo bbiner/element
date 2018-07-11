@@ -177,17 +177,24 @@ export default {
       _score.put(TASK_ARTICLE_READ_URL, this.form).then(res => {
         console.log(res)
         this.dialogTableVisible = false
-        this.$message({
-          type: 'success',
-          message: '设置成功'
-        })
+        if (res.code === 1000) {
+          this.$message({
+            type: 'success',
+            message: '设置成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
         setTimeout(() => {
           this.$emit('refresh')
         }, 100)
       }).catch(error => {
         this.$message({
           type: 'error',
-          message: error.data.error
+          message: error.msg
         })
       })
     },

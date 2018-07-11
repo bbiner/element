@@ -3,11 +3,11 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="page.currentPage"
+      :current-page="Math.round(page.currentPage)"
       :page-sizes="[15, 30, 45, 60]"
-      :page-size="page.pageSize"
+      :page-size="Math.round(page.pageSize)"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="Math.round(this.page.totalRow)">
+      :total="Math.round(page.totalRow)">
     </el-pagination>
   </div>
 </template>
@@ -26,6 +26,7 @@ export default {
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
       this.params.size = val
+      this.handleCurrentChange()
     },
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
