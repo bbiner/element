@@ -5,6 +5,7 @@ class Community {
     return new Promise((resolve, reject) => {
       Http.get(MEMBERS_URL, {params: params})
         .then(response => {
+          console.log('response', response)
           if (response.status === 200 || response.status === 204) {
             resolve(response.data)
           }

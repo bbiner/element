@@ -47,29 +47,30 @@
       style="width: 100%"
     >
       <el-table-column
+        prop="id"
+        label="ID"
+        width="120">
+      </el-table-column>
+      <el-table-column
         prop="nick_name"
-        label="会员昵称"
-        width="260">
+        label="会员昵称">
       </el-table-column>
       <el-table-column
         prop="login_account"
-        label="手机号码"
-        width="260">
+        label="手机号码">
       </el-table-column>
       <el-table-column
         prop="used_amount"
-        label="已使用积分"
-        width="260">
+        label="已使用积分">
       </el-table-column>
       <el-table-column
         prop="amount"
         label="剩余积分"
-        width="260">
+        width="220">
       </el-table-column>
       <el-table-column
         prop="status"
-        label="积分状态"
-        width="260">
+        label="积分状态">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status ? 'success' : 'danger'">{{scope.row.status ? '有效' : '无效'}}</el-tag>
         </template>

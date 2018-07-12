@@ -24,14 +24,19 @@
       stripe
       style="width: 80%">
       <el-table-column
+        prop="id"
+        label="ID"
+        width="">
+      </el-table-column>
+      <el-table-column
         prop="created_at"
         label="时间"
-        width="180">
+        width="">
       </el-table-column>
       <el-table-column
         prop="variational"
         label="积分变动"
-        width="180">
+        width="">
       </el-table-column>
       <el-table-column
         prop="source"

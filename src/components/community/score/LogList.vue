@@ -29,29 +29,34 @@
     style="width: 100%"
   >
     <el-table-column
+      prop="id"
+      label="ID"
+      width="100">
+    </el-table-column>
+    <el-table-column
       prop="nick_name"
       label="会员昵称"
-      width="260">
+      width="">
     </el-table-column>
     <el-table-column
       prop="login_account"
       label="手机号码"
-      width="260">
+      width="">
     </el-table-column>
     <el-table-column
       prop="updated_at"
       label="修改时间"
-      width="260">
+      width="">
     </el-table-column>
     <el-table-column
       prop="operator"
       label="修改人"
-      width="260">
+      width="">
     </el-table-column>
     <el-table-column
       prop="variational"
       label="积分变动"
-      width="260">
+      width="">
     </el-table-column>
     <el-table-column
       prop="operation_reason"

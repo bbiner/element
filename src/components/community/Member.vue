@@ -12,6 +12,11 @@
       stripe
       style="width: 80%">
       <el-table-column
+        prop="id"
+        label="ID"
+        width="180">
+      </el-table-column>
+      <el-table-column
         prop="nick_name"
         label="姓名"
         width="180">
