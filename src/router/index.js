@@ -96,6 +96,12 @@ export default new Router({
           component: OrderManage,
           name: '订单管理',
           iconCls: 'el-icon-mobile-phone'
+        },
+        {
+          path: '/score',
+          component: Management,
+          name: '积分管理',
+          iconCls: 'el-icon-setting'
         }
       ]
     },
@@ -116,20 +122,6 @@ export default new Router({
           component: CommunityPayCode,
           name: '付款码',
           iconCls: 'el-icon-tickets'
-        }
-      ]
-    },
-    {
-      path: '/',
-      component: Home,
-      name: '积分商城',
-      iconCls: 'el-icon-mobile-phone',
-      children: [
-        {
-          path: '/score',
-          component: Management,
-          name: '积分管理',
-          iconCls: 'el-icon-setting'
         }
       ]
     }
